@@ -82,20 +82,19 @@ def encode(labels, classes):
     return target
 
 
-def train(user, training_set, validation_set, classes, num_epoch=2, batch_size=12):
-    device = (
+def train(user, training_set, validation_set, classes, num_epoch=2, batch_size=2):
+    device = torch.device(
         "cuda:0"
         if torch.cuda.is_available()
         else "mps"
         if torch.backends.mps.is_available()
         else "cpu"
     )
-
+    
     usermodel = UserModel(classes)
     usermodel = usermodel.to(device)
 
     MODEL_PATH = f"./static/{user.id}/model/model.pth"
-
     if not os.path.exists(MODEL_PATH):
         print('nn              Training pretrained model: ast-finetuned-audioset-10-10-0.4593')
         model = ASTForAudioClassification.from_pretrained("MIT/ast-finetuned-audioset-10-10-0.4593")
@@ -261,7 +260,7 @@ def embeddings(filename, user, target_rate=16000):
     signal = resample(signal[0])
     feature_extractor = AutoFeatureExtractor.from_pretrained("MIT/ast-finetuned-audioset-10-10-0.4593")
     feature = feature_extractor(signal, sampling_rate=target_rate, return_tensors="pt")
-    feature = feature['input_values'].to(device)
+    feature = feature['input_values'].to(device) 
 
     MODEL_PATH = f'./static/{user.id}/model/model.pth'
 

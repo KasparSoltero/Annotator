@@ -38,7 +38,7 @@ async def change_status(start: str, end: str, status: str, user: schemas.User, d
 
 async def export(user: schemas.User, db: orm.Session, start:str='2020-01-01', end:str='2200-01-01'):
     await create_validation(user, db)
-    segments = db.query(models.Segments).filter_by(owner_id=user.id).filter(models.Segments.status == 'Complete').all()
+    segments = db.query(models.Segments).filter_by(owner_id=user.id).all() # .filter(models.Segments.status == 'Complete')
     startDate = dt.datetime(*list(map(int, start.split('-'))))
     endDate = dt.datetime(*list(map(int, end.split('-'))))
 
