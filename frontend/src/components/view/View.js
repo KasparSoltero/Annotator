@@ -18,7 +18,6 @@ export default function GridView({grid, setGrid, setAudio, handlePointClick, tag
 
     useEffect(() => {
         setRefresh(!refresh)
-        console.log("playlist updated")
     },[done])
 
     useEffect(() => {
@@ -28,6 +27,7 @@ export default function GridView({grid, setGrid, setAudio, handlePointClick, tag
                 method: "GET",
                 headers: {Authorization: "Bearer " + token}
                 }
+
                 const response = await fetch(`http://localhost:8000/api/segs`, requestOptions)
                 
                 if (response.ok) {
@@ -38,11 +38,10 @@ export default function GridView({grid, setGrid, setAudio, handlePointClick, tag
                     }
                     if (playlist.length > 0) {
                         setDone(!done)
-                    } else {
-                        console.log("nothing to clear")
                     }
+                    console.log('               '+playlist.length+' segments loaded (View.js)')
                 } else {
-                    console.log(response)
+                    console.log('error:         failed to get segments to the grid')
                 }
             }
             getPlaylist()
@@ -71,8 +70,6 @@ export default function GridView({grid, setGrid, setAudio, handlePointClick, tag
     const filterbyLabel = (audio) => {
         return tag === 'All' || audio.label === tag
     }
-
-
 
     return (
         <div className="cards_container">

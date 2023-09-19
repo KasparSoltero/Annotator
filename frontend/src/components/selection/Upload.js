@@ -43,7 +43,9 @@ export default function Upload({token, getAudio, upload, setUpload, state, setSt
       if (refs.length === 0) {
         setUploadingAudio(false)
         setUpload(true)
-      }
+      } else if (upload!=null){
+        console.log('click:         '+(upload? 'audio upload settings' : 'hide audio upload settings'))
+      } 
     }
   },[upload],[])
 
@@ -65,6 +67,7 @@ export default function Upload({token, getAudio, upload, setUpload, state, setSt
           }
         const response = await fetch(`http://localhost:8000/api/upload-audio?downsample=${downsample}&denoise=${denoise}&segment=${segment}&predict=${predict}`, requestOptions)
         if (response.ok) {
+          console.log(files[i].name+'    '+(downsample? '\u223f 16kHz ':'')+(denoise? 'denoising ':'')+(segment? 'segmenting ':'')+(predict? 'predicting (model name) ':''))
           setProgress(progress => progress + 1)
         }
       }

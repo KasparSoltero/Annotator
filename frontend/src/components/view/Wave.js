@@ -9,7 +9,6 @@ import EditLabels from '../Label'
 import { tick_icon, trash_icon } from '../../utils/icons';
 import './view.css'
 
-
 export default function Wave({index, audio, setGrid, setAudio, handlePointClick, search, setSearch, deleted, setDeleted, refresh, setColours}) {
     const wavesurfer = useRef(false)
     const ref = useRef(null)
@@ -53,11 +52,16 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
         if (ref.current) {
             const handleInstance = async () => {
                 var audio_instance = await getAudio()
-                await wavesurferInstance(index, audio_instance)
-                if (wavesurfer.current) {
-                    wavesurfer.current.load(audio_instance)
+                if (audio_instance) {
+                    await wavesurferInstance(index, audio_instance)
+                    if (wavesurfer.current) {
+                        wavesurfer.current.load(audio_instance)
+                    }
+                } else {
+                    console.log('error:         '+audio.filename+' failed to load (Wave.js)')
                 }
             }
+            console.log('               '+audio.filename+' loading audio (Wave.js)')
             handleInstance()
         }
         // console.log(wavesurfer.current)
@@ -69,9 +73,10 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
     async function getAudio() {
         const requestOptions = {
           method: "GET",
-          headers: {Authorization: "Bearer " + token}
+          headers: {Authorization: "Bearer " + token} 
         }
-  
+        
+        console.log('               '+audio.filename+' fetching segments (Wave.js)')
         const response = await fetch(`http://localhost:8000/api/segments/${audio.filename}`, requestOptions)
         if (response.ok) {
             const data = await response.blob()
@@ -234,7 +239,7 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
           }
         const response = await fetch(`http://localhost:8000/api/seg/${audio.filename}`, requestOptions)
         if (response.ok) {
-        console.log('Segment deleted')
+        console.log('               '+audio.filename+' deleted')
         setDeleted(!deleted)
         setInfo(false)
         }

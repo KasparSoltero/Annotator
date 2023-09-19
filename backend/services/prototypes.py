@@ -61,7 +61,9 @@ async def predict(filename, user: schemas.User, db: orm.Session):
     query = np.load(f"./static/{user.id}/supports/{filename[:-4]}.npy", allow_pickle=True)
 
     d = []
-    for _,_,labels in os.walk(f'./static/{user.id}/prototypes'):
+    for _,p,labels in os.walk(f'./static/{user.id}/prototypes'):
+        if '.DS_Store' in labels:
+            labels.remove('.DS_Store')
         for label in labels:
             prototype = np.load(f'./static/{user.id}/prototypes/{label}', allow_pickle=True)
 

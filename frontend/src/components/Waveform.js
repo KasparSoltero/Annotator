@@ -135,8 +135,12 @@ export default function Waveform() {
         if (response.ok) {
           const data = await response.blob()
           let audio = new Audio()
-          audio.src = URL.createObjectURL(data)
-          wavesurfer.current.load(audio)
+          try {
+            audio.src = URL.createObjectURL(data)
+            wavesurfer.current.load(audio)
+          } catch {
+            console.log("error:       "+audio_file+" unable to load to wavesurfer")
+          }
           // wavesurfer.current.spectrogram.init()
         }
       }
@@ -353,6 +357,7 @@ export default function Waveform() {
     }
   },[start, end, label])
   useEffect(() => {
+
     const updateRegion = async () => {
       const requestOptions = {
         method: "PUT",

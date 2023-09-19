@@ -85,7 +85,7 @@ export default function Confidence({audio, audio_id, reload, gridFalse, updateAu
     getRegions()
   },[gridFalse])
   useEffect(() => {
-    console.log('audio_id:'+audio_id+' audio.id:'+audio.id+' (Confidence.js reloading regions)')
+    console.log('       '+audio.id+'  '+audio.filename+' _id:'+audio_id+'  (Confidence.js reloading regions)')
     if (audio_id !== null) {
       if (audio.id === audio_id) {
         getRegions()

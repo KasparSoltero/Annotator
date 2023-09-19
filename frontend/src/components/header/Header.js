@@ -45,8 +45,10 @@ export default function Header({token, wavesurfer, grid, setGrid, gridFalse, set
             console.log("something went wrong")
           }
         }
-
+    
+    // Handle grid button
     const handleClick = async () => {
+        console.log('click:         '+(grid? 'wave view' : 'grid view'))
         setGrid(!grid)
         setEditRegion(null)
         setSearch(!search)

@@ -27,6 +27,7 @@ export default function Playlist({display,
 
   const handleAudioClick = (e, audio) => {
     if (e.target.tagName !== 'INPUT') {
+      console.log('click:         '+audio.filename)
       setAudio(audio.filename);
       setAudioID(audio_id === audio.id ? null : audio.id)
       setReload(!reload)
@@ -86,7 +87,10 @@ export default function Playlist({display,
                   </div>
                   
                 </div> : null)}
-                <button onClick={() => setLimit(limit+20)}>+</button>
+                <button onClick={() => {
+                  setLimit(limit+20)
+                  console.log('click:         load more songs')
+                }}>+</button>
               </div> : <h3 className={styles.alternate}>Upload Audio to begin</h3>}
             </div>
             <hr style={{margin:'25px'}}></hr>

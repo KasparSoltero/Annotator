@@ -36,7 +36,6 @@ async def add_segments(user: schemas.User, segment: schemas.SegmentCreate, db: o
 
 async def get_segments(user: schemas.User, db: orm.Session):
     segments = db.query(models.Segments).filter_by(owner_id=user.id).all()
-    # print(segments)
     return list(map(schemas.Segment.from_orm, segments))
 
 async def update_segments(filename, segment: schemas.SegmentCreate, user: schemas.User, db: orm.Session):
@@ -65,7 +64,7 @@ async def update_segments(filename, segment: schemas.SegmentCreate, user: schema
         print("Error: segment doesn't exist")
 
 async def delete_segments(filename, user: schemas.User, db: orm.Session):
-    print(f'Deleting segment {filename}')
+    print(f'                {filename} cleaning segments', end='    ')
     parent_name = filename[:-4]
 
     seg_path = f"./static/{user.id}/seg/"
@@ -84,12 +83,13 @@ async def delete_segments(filename, user: schemas.User, db: orm.Session):
                 audio_path = f"./static/{user.id}/seg/{segment}"
 
                 if os.path.exists(audio_path):
-                    print(f"Delete {segment}")
                     os.remove(audio_path)
+                    print('[]', end='')
 
                 audio = await segment_selector(segment, user, db)
                 db.delete(audio)
                 db.commit()
+    print('') # New line
 
 async def delete_segment(filename, user: schemas.User, db: orm.Session):
     print(f'Deleting individial segment {filename}')

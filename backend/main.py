@@ -315,7 +315,6 @@ async def getSegments(filename: str, user: schemas.User = fastapi.Depends(user_s
     else:
         return HTTPResponse("invalid filename")
 
-
 # Endpoints for segment operations
 @app.get('/api/segs', status_code=200)
 async def getSegments(user: schemas.User = fastapi.Depends(user_services.get_current_user), db: orm.Session = fastapi.Depends(user_services.get_db)):

@@ -15,7 +15,7 @@ export default function AudioSelection({audio_file, setAudio, audio_id, setAudio
   const [start, setStartTime] = useState('2020-01-01')
   const [end, setEndTime] = useState(`${date.getFullYear()}-${date.getMonth()+1 < 10 ? `0${date.getMonth()+1}`:`${date.getMonth()+1}`}-${date.getDate() < 10 ? `0${date.getDate()}`:`${date.getDate()}`}`)
   const [display, setDisplay] = useState(false)
-  const [upload, setUpload] = useState(true)
+  const [upload, setUpload] = useState(null)
   const [labels, setLabels] = useState([])  // User labels
   const [tag, setTag] = useState('All')
   const [checked, setChecked] = useState([])
@@ -100,7 +100,7 @@ export default function AudioSelection({audio_file, setAudio, audio_id, setAudio
         setPlaylist(playlist => [...playlist, file])
       }
       if (data.length !== 0) {
-        setUpload(false)
+        setUpload(null) //null so no log is displayed
       }
     }
   }

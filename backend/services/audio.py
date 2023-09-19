@@ -92,12 +92,14 @@ async def upload_audio(user: schemas.User, db: orm.Session, files: list[UploadFi
 
                 # Downsample audio
                 if downsample:
-                    print('Resampling...')
-                    audio = librosa.resample(audio, orig_sr=sampleRate, target_sr=target_rate, res_type='fft')
-                    sampleRate = target_rate
-                
+                    try:
+                        audio = librosa.resample(audio, orig_sr=sampleRate, target_sr=target_rate, res_type='fft')
+                        sampleRate = target_rate
+                    except:
+                        print(f'error:          {file.filename} unable to downsample from {sampleRate} to {target_rate} Hz')
                 # Save audio and denoise if option is selected
-                audio = await denoiseAudio(audio, sampleRate, file.filename, user.id, denoise)
+                try: audio = await denoiseAudio(audio, sampleRate, file.filename, user.id, denoise)
+                except: print(f'error:          {file.filename} unable to denoise')
 
                 # Ensure 300 second length
                 if np.shape(audio)[0] < 300 * sampleRate:
@@ -169,12 +171,13 @@ async def delete_audio(filename: str, user: schemas.User, db: orm.Session):
     #             if os.path.exists(mfcc_path+name):
     #                 os.remove(mfcc_path+name)
 
-    await delete_segments(filename, user, db)
+    try: await delete_segments(filename, user, db)
+    except:  print(f'error:          {filename} unable to delete segments')
 
-    print(f'Deleting parent audio file {filename}')
-    audio = await audio_selector(filename, user, db)
+    audio = await audio_selector(filename, user, db) # Retrieve audio file from database
     db.delete(audio)
     db.commit()
+    print(f'                {filename} removed from database')
 
 async def update_audio(filename: str, audio: schemas.AudioCreate, user: schemas.User, db: orm.Session):
     audio_db = await audio_selector(filename, user, db)
