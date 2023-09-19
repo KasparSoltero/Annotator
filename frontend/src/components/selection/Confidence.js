@@ -1,3 +1,5 @@
+// BUG - Audio status incorrectly set to "Incomplete"
+
 import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from "../../context/UserContext"
 import { Chart as ChartJS, ArcElement} from 'chart.js';
@@ -149,9 +151,9 @@ export default function Confidence({audio, audio_id, reload, gridFalse, updateAu
               'rgb(103, 139, 255)',
               'rgb(178, 214, 255)'],
           }]})
-    if (audio_id !== null) {
-      updateAudio(audio, audio.validation, confidence, completion)
-    }
+    // if (audio_id !== null) { //ERROR HERE - status incorrectly changed to "Incomplete"
+    //   updateAudio(audio, audio.validation, confidence, completion)
+    // }
   },[confidence])
 
   useEffect(() => {
@@ -163,7 +165,7 @@ export default function Confidence({audio, audio_id, reload, gridFalse, updateAu
               'rgb(154, 188, 154)',
               'rgb(224, 143, 133)'],
           }]})
-    if (audio_id !== null) {
+    if (audio_id !== null) { //ERROR HERE - status incorrectly changed to "Incomplete"
       updateAudio(audio, audio.validation, confidence, completion)
     }
   },[completion])
@@ -174,7 +176,7 @@ export default function Confidence({audio, audio_id, reload, gridFalse, updateAu
       <p className={styles.name}>{audio.filename}</p>
       <div className={styles.pie_container}>
         <div className={styles.pie} >< Doughnut data={confidence_data} options={confidenceOptions}/></div>
-        <div className={styles.pie} >< Doughnut data={completion_data} options={completionOptions}/></div>
+        {/* <div className={styles.pie} >< Doughnut data={completion_data} options={completionOptions}/></div> */}
       </div>
     </div>
     
