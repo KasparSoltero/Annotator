@@ -143,12 +143,14 @@ async def generatePoints(user: schemas.User, db: orm.Session, segments):
 
     # Collecting data related to each segment
     for _, _, filenames in os.walk(f'./static/{user.id}/seg/'):
+        filenames = [f for f in filenames if not f.startswith('.')] # exclude .DS_Store
         for filename in filenames:
             save_supports(filename, user)
 
         filenames.reverse()
         for i in range(len(filenames)):
             segment_object = await segment_selector(filenames[i], user, db)
+            print(filenames[i], segment_object)
             ids.append(segment_object.id)
             svs.append([segments[i].x, segments[i].y])
             files.append(filenames[i])

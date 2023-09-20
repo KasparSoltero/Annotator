@@ -266,6 +266,7 @@ async def getPoints(user: schemas.User = fastapi.Depends(user_services.get_curre
     for i in range(len(points["datasets"])):
         point_files.append(points["datasets"][i]["file"])
     for _,_,filenames in os.walk(f'./static/{user.id}/seg/'):
+        filenames = [f for f in filenames if not f.startswith('.')] # exclude .DS_Store
         for file in filenames:
             if file not in point_files:
                 segment = await segments_services.segment_selector(file, user, db)
