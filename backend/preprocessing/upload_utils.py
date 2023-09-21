@@ -12,8 +12,7 @@ def save_supports(filename: str, user: schemas.User):
             os.mkdir(f'./static/{user.id}/supports/')
         print(f'                {filename} generating supports...')
         e = embeddings(filename, user)
-        print(e)
-        np.save(f'./static/{user.id}/supports/{filename[:-4]}.npy',e, allow_pickle=True) 
+        np.save(f'./static/{user.id}/supports/{filename[:-4]}.npy',e) 
 
 def convert_mp3(file):
     audio_mp3 = AudioSegment.from_mp3(file)

@@ -246,7 +246,6 @@ async def updateAudio(background_task: BackgroundTasks, filename: str, audio: sc
     if len(segments) > 10:
         # Trigger training
         _ = await classifier.classifier(user, db, background_task)
-        print("Model updated")
     
     return audio
 

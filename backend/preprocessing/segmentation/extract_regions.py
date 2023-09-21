@@ -126,7 +126,6 @@ def parent_name(string, file_extension):
 
 def generate_segment(id, segment):
     # Segment audio generated here
-    print(f'Generating {segment["filename"]}')
     output_path = f'./static/{id}/seg/'
     audio, sr = librosa.load(f'./static/{id}/audio/' + parent_name(segment['filename'], segment['filename'][-4:]), sr=None)
     scaled_start = int(np.floor(sr * segment['start']))
