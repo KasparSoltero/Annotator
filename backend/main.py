@@ -197,9 +197,7 @@ async def updateAudio(background_task: BackgroundTasks, filename: str, audio: sc
     segments = db.query(models.Segments).filter_by(owner_id=user.id).filter(models.Segments.status == 'Complete').all()
     if len(segments) > 10:
         # Trigger training
-        print("Updating model")
         _ = await classifier.classifier(user, db, background_task)
-        print("Model updated")
     
     return audio
 
@@ -229,10 +227,8 @@ async def export_annotations(start: str, end: str, user: schemas.User = fastapi.
 # Export Model
 @app.get("/api/model", status_code=200)
 async def export_model(user: schemas.User = fastapi.Depends(user_services.get_current_user), db: orm.Session = fastapi.Depends(user_services.get_db)):
-    # annotations = await classifier.export_model(user, db)
-    directory = f"./classifier/{user.id}/model/"
-    shutil.make_archive(f"classifier/{user.id}/model", 'zip', directory)
-    return FileResponse(path=f"classifier/{user.id}/model.zip", filename="model", media_type='zip')
+    # Due to the size of the feature extractor, only the user model is exported
+    return FileResponse(path=f"static/{user.id}/model/usermodel.pth", filename="usermodel", media_type='pth')
 
 
 # Visualisations
@@ -334,8 +330,9 @@ async def addSegment(segment: dict, user: schemas.User = fastapi.Depends(user_se
 
 @app.put('/api/seg/{filename}', status_code=200)
 async def updateSegment(filename: str, segment:schemas.SegmentCreate, user: schemas.User = fastapi.Depends(user_services.get_current_user), db: orm.Session = fastapi.Depends(user_services.get_db)):
-    print(filename)
     path = f'./static/{user.id}/points.json'
+
+    # update point label
     if os.path.exists(path):
         with open(path, 'r') as points_json:
             points = json.load(points_json)
@@ -346,6 +343,7 @@ async def updateSegment(filename: str, segment:schemas.SegmentCreate, user: sche
         with open(path, 'w') as points_json:
             json.dump(points, points_json)
             points_json.close()
+
     segment = await segments_services.update_segments(filename, segment, user, db=db)
     return segment
 

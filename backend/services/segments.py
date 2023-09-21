@@ -39,6 +39,7 @@ async def get_segments(user: schemas.User, db: orm.Session):
     return list(map(schemas.Segment.from_orm, segments))
 
 async def update_segments(filename, segment: schemas.SegmentCreate, user: schemas.User, db: orm.Session):
+    print(f'                {filename} updating segment')
     point = await add_user_segment(dict(segment), user)
 
     # Adds user selected segment supports
@@ -61,7 +62,7 @@ async def update_segments(filename, segment: schemas.SegmentCreate, user: schema
         db.commit()
         db.refresh(segment_db)
     except:
-        print("Error: segment doesn't exist")
+        print("error           {filename} segment doesn't exist")
 
 async def delete_segments(filename, user: schemas.User, db: orm.Session):
     print(f'                {filename} cleaning segments', end='    ')
