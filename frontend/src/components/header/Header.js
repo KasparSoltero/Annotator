@@ -47,7 +47,7 @@ export default function Header({token, wavesurfer, grid, setGrid, gridFalse, set
         }
     
     // Handle grid button
-    const handleClick = async () => {
+    const gridClick = async () => {
         console.log('click:         '+(grid? 'wave view' : 'grid view'))
         setGrid(!grid)
         setEditRegion(null)
@@ -73,16 +73,16 @@ export default function Header({token, wavesurfer, grid, setGrid, gridFalse, set
                 <select className='tags' onChange={e => setTag(e.target.value)}>
                     {options.map((label, index) => <option key={index}>{label}</option>)}
                 </select> : null}
-                <button className="search_icon" onClick={() => handleClick()}>
+                <button className="search_icon" onClick={() => gridClick()}>
                     <img src={grid ? wave_icon : grid_icon} alt='change view' style={grid ? {width: "30px"} : {width: "25px"}} className="tour-grid"></img>
                 </button>
             </span>
 
             {/* <button className={styles.menu} onFocus={() => setRefresh(true)} onBlur={() => setRefresh(false)}><img className={styles.img} src={stats_icon} alt='profile'></img><User/></button> */}
             <div className={styles.menu}><img className='tour-training' src={training_icon} alt='training' onClick={() => trainingClick()}></img>
-                <div className={styles.console} style={!training ? {display: "none"} : {display: "block"}}>
+                {/* <div className={styles.console} style={!training ? {display: "none"} : {display: "block"}}>
                     < Training />
-                </div>
+                </div> */}
             </div>
             <div className={styles.menu}><img className='tour-settings' src={settings_icon} alt='settings' onClick={() => settingsClick()}></img>
                 <div className={styles.console} style={!settings ? {display: "none"} : {display: "block"}}>

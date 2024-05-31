@@ -8,7 +8,7 @@ import EditLabels from '../Label'
 // import Overlay from '../../utils/Overlay'
 import { tick_icon, trash_icon } from '../../utils/icons';
 import './view.css'
-
+ 
 export default function Wave({index, audio, setGrid, setAudio, handlePointClick, search, setSearch, deleted, setDeleted, refresh, setColours}) {
     const wavesurfer = useRef(false)
     const ref = useRef(null)
@@ -38,7 +38,6 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
               const response = await fetch(`http://localhost:8000/api/seg/${audio.filename}`, requestOptions)
               if (response.ok) {
                 var data = await response.json()
-                console.log(data)
                 setStatus(data.status)
                 setLabel(data.label)
                 setPX(data.x)
@@ -58,10 +57,10 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
                         wavesurfer.current.load(audio_instance)
                     }
                 } else {
-                    console.log('error:         '+audio.filename+' failed to load (Wave.js)')
+                    console.log('error:         '+audio.filename+' failed to load')
                 }
             }
-            console.log('               '+audio.filename+' loading audio (Wave.js)')
+            console.log('               '+audio.filename+' loading segment')
             handleInstance()
         }
         // console.log(wavesurfer.current)
@@ -76,7 +75,6 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
           headers: {Authorization: "Bearer " + token} 
         }
         
-        console.log('               '+audio.filename+' fetching segments (Wave.js)')
         const response = await fetch(`http://localhost:8000/api/segments/${audio.filename}`, requestOptions)
         if (response.ok) {
             const data = await response.blob()
@@ -127,7 +125,6 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
     }
 
     const handleLabel = async (e) => {
-        console.log('UPDATED!')
         e.stopPropagation()
         if (wavesurfer.current) {
             wavesurfer.current.pause()
@@ -192,7 +189,7 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
           const response = await fetch(`http://localhost:8000/api/seg/${audio.filename}`, requestOptions)
 
           if (response.ok) {
-            console.log('Segment Updated')
+            console.log('                '+audio.filename+' updated')
           }
     }
 
@@ -277,6 +274,7 @@ export default function Wave({index, audio, setGrid, setAudio, handlePointClick,
                     x={x} 
                     y={y}
                     setColours={setColours}/>
+
         </div>
     )
 }

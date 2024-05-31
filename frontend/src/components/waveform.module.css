@@ -14,7 +14,7 @@
     flex-direction: row;
     flex-basis: 0;
     background-color: var(--background-colour);
-    flex-wrap: wrap-reverse;
+    flex-wrap: nowrap;
     /* margin-right: 100px; */
 }
 

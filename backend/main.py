@@ -25,6 +25,7 @@ import services.segments as segments_services
 import services.user as user_services
 import services.visualisation as visualisation
 import services.prototypes as prototype_services
+import services.networks as network_services
 
 templates = Jinja2Templates(directory="templates")
 
@@ -151,9 +152,24 @@ async def set_user_sample_rate(sr:int, user: schemas.User = fastapi.Depends(user
 async def get_user_sample_rate(user: schemas.User = fastapi.Depends(user_services.get_current_user), db: orm.Session = fastapi.Depends(user_services.get_db)):
     return await user_services.get_sample_rate(user, db)
 
+# Network endpoints
+@app.get('/api/networks', status_code=200)
+async def get_networks(user: schemas.User = fastapi.Depends(user_services.get_current_user), db: orm.Session = fastapi.Depends(user_services.get_db)):
+    networks = await network_services.get_networks(user, db)
+    return networks
+
+@app.post('/api/networks', status_code=200)
+async def add_network(network: dict, user: schemas.User = fastapi.Depends(user_services.get_current_user), db: orm.Session = fastapi.Depends(user_services.get_db)):
+    network = await network_services.add_network(network, user, db)
+    return network
+
+@app.put('/api/networks/{id}', status_code=200)
+async def update_network(network: dict, user: schemas.User = fastapi.Depends(user_services.get_current_user), db: orm.Session = fastapi.Depends(user_services.get_db)):
+    print('x')
+    network = await network_services.update_networks(network, user, db)
+    return network
 
 # Audio Endpoints
-
 async def parent_status(parent, user: schemas.User, db: orm.Session):
     # This updates the status a single parent audio file if all child segments are complete
     print("Checking parent status")
@@ -304,7 +320,6 @@ async def getPoints(user: schemas.User = fastapi.Depends(user_services.get_curre
     path = f'./static/{user.id}/points.json'
 
     points = await segments_services.generatePoints(user, db, segments)
-    print(f"Points: {points}")
 
     point_files = []
     for i in range(len(points["datasets"])):

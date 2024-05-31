@@ -33,7 +33,7 @@ export default function Settings({wavesurfer, classes, setClasses, setColours, r
         }
         const response = await fetch('http://localhost:8000/api/export_annotations', requestOptions)
         if (response.ok) {
-            console.log("Annotations exported to static")
+            console.log(response.data)
         }
     }
 

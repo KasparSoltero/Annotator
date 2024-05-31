@@ -38,8 +38,8 @@ export default function GridView({grid, setGrid, setAudio, handlePointClick, tag
                     }
                     if (playlist.length > 0) {
                         setDone(!done)
+                        console.log('               '+playlist.length+' segments loaded')
                     }
-                    console.log('               '+playlist.length+' segments loaded (View.js)')
                 } else {
                     console.log('error:         failed to get segments to the grid')
                 }

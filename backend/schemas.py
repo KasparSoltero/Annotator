@@ -79,3 +79,25 @@ class Segment(SegmentBase):
 
     class Config:
         orm_mode = True
+
+# Network schemas
+class NetworkBase(pydantic.BaseModel):
+    name: str
+    description: str
+    status: str
+    is_active: bool
+    accuracy: float
+    f1_score: float
+    configuration: str
+
+class NetworkCreate(NetworkBase):
+    pass
+
+class Network(NetworkBase):
+    id: int
+    owner_id: int
+    date_created: str
+    date_updated: str
+
+    class Config:
+        orm_mode = True

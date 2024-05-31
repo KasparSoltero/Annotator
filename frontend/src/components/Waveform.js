@@ -11,8 +11,10 @@ import AudioSelection from "./selection/Selection"
 import AudioAnalysis from "./analysis/Analysis"
 import PointMap from "./pointMap/PointMap"
 import View from "./view/View"
+import Training from "./training/Training"
 import Timestamps from './playback/Timestamps'
 import Overlay from '../utils/Overlay'
+import WaveformInfoPanel from './WaveformInfoPanel'
 
 import { UserContext } from "../context/UserContext"
 
@@ -460,7 +462,9 @@ export default function Waveform() {
         y={y}
         setColours={setColours}/>
 
-      { grid ? <View grid={grid} setGrid={setGrid} setAudio={setAudio} handlePointClick={handlePointClick} tag={tag} search={search} setSearch={setSearch} setColours={setColours}/> : (
+
+      { training ? <Training/> : (
+        grid ? <View grid={grid} setGrid={setGrid} setAudio={setAudio} handlePointClick={handlePointClick} tag={tag} search={search} setSearch={setSearch} setColours={setColours}/> : (
         <div className={styles.noscroll}>
           <div className={styles.wrapper}>
             <div className={styles.blocks}>
@@ -510,9 +514,40 @@ export default function Waveform() {
                     </div>
                   </span>
                 </div>
-              </div>
+              </div> 
 
-
+              {/* <WaveformInfoPanel
+                audio_file={audio_file}
+                audio_id={audio_id}
+                id={id}
+                classes={classes}
+                search={search}
+                reload={reload}
+                update={update}
+                edit={edit}
+                playing={playing}
+                x={x}
+                y={y}
+                state={state}
+                start={start}
+                end={end}
+                label={label}
+                duration={duration}
+                time={time}
+                editRegion={editRegion}
+                playlist={playlist}
+                settings={settings}
+                training={training}
+                grid={grid}
+                gridFalse={gridFalse}
+                tag={tag}
+                info={info}
+                point={point}
+                cluster={cluster}
+                colours={colours}
+                restart={restart}
+              /> */}
+              
               {info ?
               <AudioAnalysis 
                   start={start}
@@ -523,7 +558,7 @@ export default function Waveform() {
             </div>
           </div>
         </div>
-      )}        
+      ))}        
     </div>
   )
 }
